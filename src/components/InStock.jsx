@@ -1,16 +1,20 @@
 import React from "react";
-import PlantCard from "./PlantCard";
 
 function InStock({ plants, onToggleStock }) {
-  const inStockPlants = plants.filter((plant) => plant.inStock);
-
   return (
     <div className="in-stock-section">
       <h2>In Stock Plants</h2>
       <ul className="plant-list">
-        {inStockPlants.map((plant) => (
-          <li key={plant.id}>
-            <PlantCard plant={plant} onToggleStock={onToggleStock} />
+        {plants.map((plant) => (
+          <li key={plant.id} data-testid="in-stock">
+            <div className="plant-card">
+              <h2>{plant.name}</h2>
+              <p>${plant.price}</p>
+              <img src={plant.image} alt={plant.name} />
+              <button onClick={() => onToggleStock(plant.id)}>
+                {plant.inStock ? "Mark Out of Stock" : "Mark In Stock"}
+              </button>
+            </div>
           </li>
         ))}
       </ul>

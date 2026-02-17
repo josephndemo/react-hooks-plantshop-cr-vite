@@ -1,9 +1,14 @@
 import React from "react";
+import Header from "./components/Header";
 import PlantPage from "./components/PlantPage";
-import "./App.css"; 
 
 function App() {
-  return <PlantPage />;
+  return (
+    <div className="app">
+      <Header />
+      <PlantPage />
+    </div>
+  );
 }
 
 export default App;
