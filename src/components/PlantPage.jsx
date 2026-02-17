@@ -1,3 +1,4 @@
+// src/components/PlantPage.jsx
 import React, { useState, useEffect } from "react";
 import NewPlantForm from "./NewPlantForm";
 import PlantList from "./PlantList";
@@ -10,8 +11,7 @@ function PlantPage() {
   useEffect(() => {
     fetch("http://localhost:6001/plants")
       .then((r) => r.json())
-      .then((data) => setPlants(data))
-      .catch((err) => console.error("Fetch error:", err));
+      .then((data) => setPlants(data));
   }, []);
 
   function handleAddPlant(newPlant) {
@@ -24,6 +24,7 @@ function PlantPage() {
 
   return (
     <main>
+      <h1>All Plants</h1> {/* The test is failing because this is missing! */}
       <NewPlantForm onAddPlant={handleAddPlant} />
       <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <PlantList plants={displayedPlants} />

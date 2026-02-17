@@ -1,30 +1,21 @@
+// src/components/PlantCard.jsx
 import React, { useState } from "react";
 
 function PlantCard({ plant }) {
   const [isInStock, setIsInStock] = useState(true);
 
-  function handleToggle() {
-    setIsInStock((prev) => !prev);
-  }
-
   return (
-    <li className="card" data-testid="plant-item">
+    <li className="card" data-testid="in-stock">
       <img src={plant.image} alt={plant.name} />
       <h4>{plant.name}</h4>
       <p>Price: {plant.price}</p>
       {isInStock ? (
-        <button 
-          className="primary" 
-          onClick={handleToggle} 
-          data-testid="in-stock"
-        >
-          In Stock
-        </button>
+        <button className="primary" onClick={() => setIsInStock(false)}>In Stock</button>
       ) : (
-        <button onClick={handleToggle}>Out of Stock</button>
+        <button onClick={() => setIsInStock(true)}>Out of Stock</button>
       )}
     </li>
   );
 }
 
-export default PlantCard;
+export default PlantCard; // <--- MUST HAVE THIS LINE

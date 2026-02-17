@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import App from './App'; // adjust path as needed
+import App from '../../App'; // adjust path as needed
 
 describe('All Plants Deliverable', () => {
   it('renders the plants list', () => {

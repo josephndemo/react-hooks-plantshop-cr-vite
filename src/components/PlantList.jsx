@@ -1,9 +1,10 @@
+// src/components/PlantList.jsx
 import React from "react";
-import PlantCard from "./PlantCard";
+import PlantCard from "./PlantCard"; // <--- NO CURLY BRACES HERE
 
 function PlantList({ plants }) {
   return (
-    <ul className="cards">
+    <ul className="cards" data-testid="plants-list">
       {plants.map((plant) => (
         <PlantCard key={plant.id} plant={plant} />
       ))}
