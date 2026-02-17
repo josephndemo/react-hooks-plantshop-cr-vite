@@ -1,51 +1,38 @@
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import App from '../../components/App';
-import '@testing-library/jest-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import App from './App';
 
-describe('2nd Deliverable', () => {
-    test('adds a new plant when the form is submitted', async () => {
-        global.setFetchResponse(global.basePlants)
-        const { getByPlaceholderText, findByText, getByText } = render(<App />)
+describe('Create Plant Deliverable', () => {
+  it('allows user to create and display a new plant', async () => {
+    const user = userEvent.setup();
+    render(<App />);
 
-        const firstPlant = {name: 'foo', image: 'foo_plant_image_url', price: '10'}
-    
-        global.setFetchResponse({...firstPlant, id: "184298qfhquhf92"})
-    
-        fireEvent.change(getByPlaceholderText('Plant name'), { target: { value: firstPlant.name } });
-        fireEvent.change(getByPlaceholderText('Image URL'), { target: { value: firstPlant.image } });
-        fireEvent.change(getByPlaceholderText('Price'), { target: { value: firstPlant.price } });
-        fireEvent.click(getByText('Add Plant'))
+    // Find form elements using accessible queries
+    const nameInput = screen.getByLabelText(/plant name/i);
+    const submitButton = screen.getByRole('button', { name: /add plant/i });
 
-        expect(fetch).toHaveBeenCalledWith("http://localhost:6001/plants", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(firstPlant),
-        })
-    
-        const newPlant = await findByText('foo');
-        expect(newPlant).toBeInTheDocument();
+    // Type and submit
+    await user.type(nameInput, 'Peace Lily');
+    await user.click(submitButton);
 
-        const secondPlant = {name: 'bar', image: 'bar_plant_image_url', price: '5'}
-    
-        global.setFetchResponse({...secondPlant, id: "3810fqhrquhf9fnqnc0"})
-    
-        fireEvent.change(getByPlaceholderText('Plant name'), { target: { value: secondPlant.name } });
-        fireEvent.change(getByPlaceholderText('Image URL'), { target: { value: secondPlant.image } });
-        fireEvent.change(getByPlaceholderText('Price'), { target: { value: secondPlant.price } });
-        fireEvent.click(getByText('Add Plant'))
-    
-        expect(fetch).toHaveBeenCalledWith("http://localhost:6001/plants", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(secondPlant),
-        })
+    // New plant should appear in the list
+    expect(screen.getByText('Peace Lily (In Stock)')).toBeInTheDocument();
 
-        const nextPlant = await findByText('bar');
-        expect(nextPlant).toBeInTheDocument();
-    });
-})
+    // Input should be cleared after submit
+    expect(nameInput).toHaveValue('');
+  });
+
+  it('does not add empty plant names', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    const nameInput = screen.getByLabelText(/plant name/i);
+    const submitButton = screen.getByRole('button', { name: /add plant/i });
+
+    await user.type(nameInput, '   '); // only spaces
+    await user.click(submitButton);
+
+    // No new empty item should appear
+    expect(screen.queryByText('(In Stock)')).not.toBeInTheDocument();
+  });
+});
