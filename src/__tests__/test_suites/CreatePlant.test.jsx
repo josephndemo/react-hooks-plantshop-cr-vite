@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from './App';
+import App from '../../App';
 
 describe('Create Plant Deliverable', () => {
   it('allows user to create and display a new plant', async () => {

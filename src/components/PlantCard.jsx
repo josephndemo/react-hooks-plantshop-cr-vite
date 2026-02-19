@@ -1,21 +1,33 @@
-// src/components/PlantCard.jsx
 import React, { useState } from "react";
 
 function PlantCard({ plant }) {
-  const [isInStock, setIsInStock] = useState(true);
+  const [isInStock, setIsInStock] = useState(
+    plant.inStock ?? true
+  );
+
+  function handleToggle() {
+    setIsInStock((prev) => !prev);
+  }
 
   return (
-    <li className="card" data-testid="in-stock">
+    <li
+      className="card"
+      data-testid={isInStock ? "in-stock" : undefined}
+    >
       <img src={plant.image} alt={plant.name} />
-      <h4>{plant.name}</h4>
-      <p>Price: {plant.price}</p>
-      {isInStock ? (
-        <button className="primary" onClick={() => setIsInStock(false)}>In Stock</button>
-      ) : (
-        <button onClick={() => setIsInStock(true)}>Out of Stock</button>
-      )}
+
+      {/* 👇 FULL TEXT IN ONE STRING */}
+      <h4>
+        {plant.name} {isInStock ? "(In Stock)" : "(Sold Out)"}
+      </h4>
+
+      <p>${plant.price}</p>
+
+      <button onClick={handleToggle}>
+        {isInStock ? "Mark Out of Stock" : "Mark In Stock"}
+      </button>
     </li>
   );
 }
 
-export default PlantCard; // <--- MUST HAVE THIS LINE
+export default PlantCard;

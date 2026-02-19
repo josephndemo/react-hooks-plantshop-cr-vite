@@ -1,13 +1,13 @@
-// src/components/PlantList.jsx
-import React from "react";
-import PlantCard from "./PlantCard"; // <--- NO CURLY BRACES HERE
+import PlantCard from "./PlantCard";
 
 function PlantList({ plants }) {
+  const plantCards = plants.map((plant) => (
+    <PlantCard key={plant.id} plant={plant} />
+  ));
+
   return (
     <ul className="cards" data-testid="plants-list">
-      {plants.map((plant) => (
-        <PlantCard key={plant.id} plant={plant} />
-      ))}
+      {plantCards}
     </ul>
   );
 }

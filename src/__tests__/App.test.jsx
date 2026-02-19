@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import App from '../App';
 
 describe('All Plants Deliverable', () => {
   it('renders the plants list with initial plants', () => {

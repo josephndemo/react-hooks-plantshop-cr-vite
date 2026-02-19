@@ -1,4 +1,3 @@
-// src/components/PlantPage.jsx
 import React, { useState, useEffect } from "react";
 import NewPlantForm from "./NewPlantForm";
 import PlantList from "./PlantList";
@@ -15,7 +14,7 @@ function PlantPage() {
   }, []);
 
   function handleAddPlant(newPlant) {
-    setPlants([...plants, newPlant]);
+    setPlants((prevPlants) => [...prevPlants, newPlant]);
   }
 
   const displayedPlants = plants.filter((plant) =>
@@ -24,7 +23,7 @@ function PlantPage() {
 
   return (
     <main>
-      <h1>All Plants</h1> {/* The test is failing because this is missing! */}
+      <h1>All Plants</h1>
       <NewPlantForm onAddPlant={handleAddPlant} />
       <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <PlantList plants={displayedPlants} />
