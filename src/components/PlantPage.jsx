@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from "react";
-import NewPlantForm from "./NewPlantForm";
-import PlantList from "./PlantList";
-import Search from "./Search";
+// src/components/PlantPage.jsx
+import React, { useState } from "react";
+import PlantCard from "./PlantCard";
 
-function PlantPage() {
-  const [plants, setPlants] = useState([]);
+function PlantPage({ plants = [], onToggleStock }) {
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    fetch("http://localhost:6001/plants")
-      .then((r) => r.json())
-      .then((data) => setPlants(data));
-  }, []);
-
-  function handleAddPlant(newPlant) {
-    setPlants((prevPlants) => [...prevPlants, newPlant]);
-  }
-
-  const displayedPlants = plants.filter((plant) =>
-    plant.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const displayedPlants = plants.filter(
+    (plant) =>
+      plant.name &&
+      plant.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <main>
       <h1>All Plants</h1>
-      <NewPlantForm onAddPlant={handleAddPlant} />
-      <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-      <PlantList plants={displayedPlants} />
+      <div className="searchbar">
+        <label htmlFor="search">Search Plants:</label>
+        <input
+          id="search"
+          placeholder="Search plants..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      <ul className="cards" data-testid="plants-list">
+        {displayedPlants.map((plant) => (
+          <PlantCard key={plant.id} plant={plant} onToggleStock={onToggleStock} />
+        ))}
+      </ul>
     </main>
   );
 }

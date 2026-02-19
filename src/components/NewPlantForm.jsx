@@ -8,10 +8,7 @@ function NewPlantForm({ onAddPlant }) {
   });
 
   function handleChange(e) {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
   function handleSubmit(e) {
@@ -21,13 +18,12 @@ function NewPlantForm({ onAddPlant }) {
     const newPlant = {
       ...formData,
       price: parseFloat(formData.price),
+      inStock: true,
     };
 
     fetch("http://localhost:6001/plants", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPlant),
     })
       .then((r) => {
@@ -36,11 +32,7 @@ function NewPlantForm({ onAddPlant }) {
       })
       .then((data) => {
         onAddPlant(data);
-        setFormData({
-          name: "",
-          image: "",
-          price: "",
-        });
+        setFormData({ name: "", image: "", price: "" });
       })
       .catch((err) => console.error(err));
   }
@@ -48,7 +40,6 @@ function NewPlantForm({ onAddPlant }) {
   return (
     <div className="new-plant-form">
       <h2>New Plant</h2>
-
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Plant Name</label>
         <input
